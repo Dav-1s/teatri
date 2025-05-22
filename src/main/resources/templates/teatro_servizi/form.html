@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuova Associazione Teatro-Servizio</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Associazione Teatro-Servizio</h1>
+
+    <form th:action="@{/teatro-servizi}" method="post" th:object="${teatroServizio}">
+        <input type="hidden" th:field="*{id}" />
+        <select th:field="*{teatroId}" required>
+    		<option value="1" disabled selected>Seleziona teatro</option>
+    		<option th:each="teatro : ${teatri}"
+            		th:value="${teatro.id}"
+            		th:text="${teatro.nome}">
+    		</option>
+		</select>
+        <select th:field="*{tipoServizioId}" required>
+    		<option value="1" disabled selected>Seleziona servizio</option>
+    		<option th:each="servizio : ${servizi}"
+            		th:value="${servizio.id}"
+            		th:text="${servizio.tipoServizio}">
+    		</option>
+		</select>
+        <label>
+            <input type="checkbox" th:field="*{richiedeOrarioArrivo}" />
+            Richiede Orario Arrivo
+        </label>
+        <input type="number" th:field="*{numAddetti}" placeholder="Numero Addetti" required />
+        <br>
+        <button type="submit" style="width: 30%;">Salva</button>
+        <br>
+    	
+    </form>
+    <a th:href="@{/teatro-servizi}" class="button">Torna alla lista</a>
+
+</div>
+</body>
+</html>

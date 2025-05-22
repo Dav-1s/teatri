@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Completa Prenotazione</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <h1>Completa Prenotazione</h1>
+    <form th:action="@{/prenotazioni/crea}" method="post">
+        <input type="hidden" name="teatroId" th:value="${teatro.id}" />
+        <input type="hidden" name="compagniaId" th:value="${compagnia.id}" />
+
+        <label for="servizioId">Servizio:</label>
+        <select name="servizioId" id="servizioId">
+            <option th:each="servizio : ${servizi}" th:value="${servizio.id}" th:text="${servizio.nome}"></option>
+        </select>
+
+        <label for="data">Data:</label>
+        <input type="date" id="data" name="data" required />
+
+        <label for="ora">Ora:</label>
+        <input type="time" id="ora" name="ora" required />
+
+        <button type="submit">Conferma Prenotazione</button>
+    </form>
+</body>
+</html>

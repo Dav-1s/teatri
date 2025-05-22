@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuovo/Modifica Teatro</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Teatro</h1>
+
+    <form th:action="@{/teatri}" method="post" th:object="${teatro}">
+        <input type="hidden" th:field="*{id}" />
+        <input type="text" th:field="*{nome}" placeholder="Nome" required />
+        <select th:field="*{tipo}" required>
+    		<option value="" disabled selected>Seleziona tipo</option>
+    		<option value="classico">Classico</option>
+    		<option value="moderno">Moderno</option>
+		</select>
+        <input type="time" th:field="*{orarioApertura}" required />
+        <input type="time" th:field="*{orarioChiusura}" required />
+        <button type="submit">Salva</button>
+    </form>
+
+    <a th:href="@{/teatri}" class="button">↩️ Torna alla lista</a>
+</div>
+</body>
+</html>

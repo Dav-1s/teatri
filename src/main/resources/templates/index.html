@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestione Teatri - Homepage</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <div class="container">
+        <h1>Benvenuto nel sistema di gestione teatri</h1>
+
+        <div class="button-group-home">
+            <form th:action="@{/compagnie}" method="get">
+                <button type="submit">Gestisci Compagnie Attoriali</button>
+            </form>
+            <form th:action="@{/teatri}" method="get">
+                <button type="submit">Gestisci Teatri</button>
+            </form>
+            <form th:action="@{/servizi}" method="get">
+                <button type="submit">Gestisci Servizi</button>
+            </form>
+            <form th:action="@{/teatro-servizi}" method="get">
+                <button type="submit">Associazioni Teatro-Servizio</button>
+            </form>
+            <form th:action="@{/prenotazioni}" method="get">
+                <button type="submit">Gestisci Prenotazioni</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

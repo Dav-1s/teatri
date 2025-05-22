@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista Compagnie Attoriali</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Elenco Compagnie Attoriali</h1>
+    <div class="center-div">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Codice Iscrizione</th>
+                <th></th> <!-- Aggiunto per le azioni -->
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="compagnia : ${compagnie}">
+            <td th:text="${compagnia.id}"></td>
+            <td th:text="${compagnia.nome}"></td>
+            <td th:text="${compagnia.codiceIscrizione}"></td>
+            <td class="actions">
+            <a th:href="@{/compagnie/edit/{id}(id=${compagnia.id})}" class="button-icon" title="Modifica">
+            ✏️
+        	</a>
+        	<a th:href="@{/compagnie/delete/{id}(id=${compagnia.id})}" 
+           		class="button-icon" 
+           		title="Elimina" 
+           		onclick="return confirm('Sei sicuro di voler eliminare questa compagnia?')">
+            	🗑️
+        	</a>
+        	</td>
+			</tr>
+        </tbody>
+    </table>
+    </div>
+    <div class="right-div">
+
+	<button class="button-icon" style="width:10%; font-size: 30px; margin-right: 10%;" onclick="window.location.href='/compagnie/create'"><b>+</b></button>
+    </div>
+    <a th:href="@{/index}" class="button">↩️ Torna alla home</a>
+
+</div>
+</body>
+</html>

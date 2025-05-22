@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login Compagnia</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <h1>Login Compagnia Attoriale</h1>
+    <form th:action="@{/login}" method="post">
+        <label for="nome">Nome Compagnia:</label>
+        <input type="text" id="nome" name="nome" required />
+
+        <label for="codiceIscrizione">Codice Iscrizione:</label>
+        <input type="text" id="codiceIscrizione" name="codiceIscrizione" required />
+
+        <button type="submit">Accedi</button>
+    </form>
+</body>
+</html>

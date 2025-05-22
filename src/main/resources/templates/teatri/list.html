@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista Teatri</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Elenco Teatri</h1>
+
+    <div class="center-div">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                    <th>Orario Apertura</th>
+                    <th>Orario Chiusura</th>
+                    <th></th> <!-- Azioni -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="teatro : ${teatri}">
+                    <td th:text="${teatro.id}"></td>
+                    <td th:text="${teatro.nome}"></td>
+                    <td th:text="${teatro.tipo}"></td>
+                    <td th:text="${teatro.orarioApertura}"></td>
+                    <td th:text="${teatro.orarioChiusura}"></td>
+                    <td class="actions">
+                        <a th:href="@{/teatri/edit/{id}(id=${teatro.id})}" class="button-icon" title="Modifica">
+                            ✏️
+                        </a>
+                        <a th:href="@{/teatri/delete/{id}(id=${teatro.id})}"
+                           class="button-icon"
+                           title="Elimina"
+                           onclick="return confirm('Sei sicuro di voler eliminare questo teatro?')">
+                            🗑️
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="right-div">
+        <button class="button-icon" style="width:10%; font-size: 30px; margin-right: 5%;"
+                onclick="window.location.href='/teatri/create'">
+            <b>+</b>
+        </button>
+    </div>
+
+    <a th:href="@{/index}" class="button">↩️ Torna alla home</a>
+</div>
+</body>
+</html>

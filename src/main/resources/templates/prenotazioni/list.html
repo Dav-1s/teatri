@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista Prenotazioni</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Prenotazioni</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Compagnia</th>
+                <th>Teatro</th>
+                <th>Servizio</th>
+                <th>Data</th>
+                <th>Ora Arrivo</th>
+                <th></th> <!-- Aggiunto per le azioni -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="prenotazione : ${listForVispr}">
+                <td th:text="${prenotazione.id}"></td>
+                <td th:text="${prenotazione.nomeCompagnia}"></td>
+                <td th:text="${prenotazione.nomeTeatro}"></td>
+                <td th:text="${prenotazione.tipoServizio}"></td>
+                <td th:text="${prenotazione.data}"></td>
+                <td th:text="${prenotazione.orarioArrivo}"></td>
+            	<td class="actions">
+            	<a th:href="@{/prenotazioni/edit/{id}(id=${prenotazione.id})}" class="button-icon" title="Modifica">
+            	✏️
+        		</a>
+        		<a th:href="@{/prenotazioni/delete/{id}(id=${prenotazione.id})}" 
+           			class="button-icon" 
+           			title="Elimina" 
+           			onclick="return confirm('Sei sicuro di voler eliminare questa prenotazione?')">
+            		🗑️
+        		</a>
+        		</td>               
+            </tr>
+        </tbody>
+    </table>
+    <div class="right-div">
+
+	<button class="button-icon" style="width:10%; font-size: 30px; margin-right: 5%;" onclick="window.location.href='/prenotazioni/create'"><b>+</b></button>
+    </div>
+    <a th:href="@{/index}" class="button">↩️ Torna alla home</a>
+
+</div>
+</body>
+</html>

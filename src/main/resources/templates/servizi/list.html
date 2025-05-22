@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista Servizi</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Elenco Servizi</h1>
+
+    <div class="center-div">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tipo Servizio</th>
+                    <th></th> <!-- Colonna per le azioni -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="servizio : ${servizi}">
+                    <td th:text="${servizio.id}"></td>
+                    <td th:text="${servizio.tipoServizio}"></td>
+                    <td class="actions">
+                        <a th:href="@{/servizi/edit/{id}(id=${servizio.id})}" class="button-icon" title="Modifica">✏️</a>
+                        <a th:href="@{/servizi/delete/{id}(id=${servizio.id})}" 
+                           class="button-icon" 
+                           title="Elimina" 
+                           onclick="return confirm('Sei sicuro di voler eliminare questo servizio?')">🗑️</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="right-div">
+        <button class="button-icon" style="width:10%; font-size: 30px; margin-right: 10%;" 
+                onclick="window.location.href='/servizi/create'"><b>+</b></button>
+    </div>
+
+    <a th:href="@{/index}" class="button">↩️ Torna alla home</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuovo Servizio</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Servizio</h1>
+
+    <form th:action="@{/servizi}" method="post" th:object="${servizio}">
+        <input type="hidden" th:field="*{id}" />
+        <select th:field="*{tipoServizio}" required>
+    		<option value="" disabled selected>Seleziona tipo</option>
+    		<option value="Prove">Prove</option>
+    		<option value="Esibizione">Esibizione</option>
+    		<option value="Incontro Tecnico-Organizzativo">Incontro Tecnico-Organizzativo</option>
+		</select>
+        <button type="submit">Salva</button>
+    </form>
+
+    <a th:href="@{/servizi}" class="button">↩️ Torna alla lista</a>
+</div>
+</body>
+</html>

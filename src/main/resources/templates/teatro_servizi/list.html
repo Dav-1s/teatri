@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista Teatro-Servizio</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Associazioni Teatro-Servizio</h1>
+    <div class="center-div">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Teatro</th>
+                <th>Tipo Servizio</th>
+                <th>Richiede Orario Arrivo</th>
+                <th>Num. Addetti</th>
+                <th></th> <!-- Colonna per le azioni -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ts : ${listForVis}">
+                <td th:text="${ts.id}"></td>
+                <td th:text="${ts.nomeTeatro}"></td>
+                <td th:text="${ts.tipoServizio}"></td>
+                <td th:text="${ts.richiedeOrarioArrivo} ? 'Sì' : 'No'"></td>
+                <td th:text="${ts.numAddetti}"></td>
+                <td class="actions">
+                    <!-- Pulsante per Modifica -->
+                    <a th:href="@{/teatro-servizi/edit/{id}(id=${ts.id})}" class="button-icon" title="Modifica">
+                        ✏️
+                    </a>
+                    <!-- Pulsante per Elimina -->
+                    <a th:href="@{/teatro-servizi/delete/{id}(id=${ts.id})}" 
+                       class="button-icon" 
+                       title="Elimina" 
+                       onclick="return confirm('Sei sicuro di voler eliminare questa associazione?')">
+                        🗑️
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <div class="right-div">
+        <!-- Pulsante per Aggiungere una Nuova Associazione -->
+        <button class="button-icon" style="width:10%; font-size: 30px; margin-right: 4%;" onclick="window.location.href='/teatro-servizi/create'"><b>+</b></button>
+    </div>
+    <a th:href="@{/index}" class="button">↩️ Torna alla home</a>
+</div>
+</body>
+</html>

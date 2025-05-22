@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuova/Modifica Prenotazione</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Prenotazione</h1>
+
+    <form th:action="@{/prenotazioni}" method="post" th:object="${prenotazione}">
+        <input type="hidden" th:field="*{id}" />
+        <select th:field="*{compagniaId}" required>
+    		<option value="1" disabled selected>Seleziona una compagnia</option>
+    		<option th:each="c : ${compagnie}"
+            		th:value="${c.id}"
+            		th:text="${c.nome}">
+    		</option>
+		</select>
+        <select th:field="*{teatroServizioId}" required>
+    		<option value="1" disabled selected>-- Seleziona Teatro-Servizio --</option>
+    		<option th:each="ts : ${listForVis}"
+            		th:value="${ts.id}"
+            		th:text="${ts.nomeTeatro + ' - ' + ts.tipoServizio}">
+    		</option>
+		</select>
+		<input type="date" th:field="*{data}" required />
+        <input type="time" th:field="*{orarioArrivo}" required />
+        <br>
+        <button type="submit">Salva</button>
+    </form>
+
+    <a th:href="@{/prenotazioni}" class="button">↩️ Torna alla lista</a>
+</div>
+</body>
+</html>

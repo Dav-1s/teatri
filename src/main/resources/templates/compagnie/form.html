@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuova/Modifica Compagnia</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Compagnia Attoriale</h1>
+
+    <form th:action="@{/compagnie}" method="post" th:object="${compagnia}">
+        <input type="hidden" th:field="*{id}" />
+        <input type="text" th:field="*{nome}" placeholder="Nome" required />
+        <input type="text" th:field="*{codiceIscrizione}" placeholder="Codice Iscrizione" required />
+        <button type="submit">Salva</button>
+    </form>
+
+    <a th:href="@{/compagnie}" class="button">↩️ Torna alla lista</a>
+</div>
+</body>
+</html>
