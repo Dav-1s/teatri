@@ -40,6 +40,11 @@ public class TeatroServizioService {
             .collect(Collectors.toList());
     }
     
+    public List<TeatroServizio> findAllm() {
+        return repository.findAll().stream()
+            .collect(Collectors.toList());
+    }
+    
     public List<TeatroDTO> findTeatroName(List<TeatroServizioDTO> teatroServizi) {
         List<TeatroDTO> teatri = new ArrayList<>();
 
