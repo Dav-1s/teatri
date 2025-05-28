@@ -24,9 +24,18 @@ public class ServizioService {
     }
 
     public ServizioDTO findById(Long id) {
+    	
         Servizio entity = repository.findById(id)
             .orElseThrow(() -> new RuntimeException("Servizio non trovato con id: " + id));
         return ServizioMapper.toDTO(entity);
+        
+//      if (repository.findById(id).isPresent()) {
+//    		Servizio entity = repository.findById(id).get();
+//    		return ServizioMapper.toDTO(entity);
+//    	} else {
+//    		throw new RuntimeException("Servizio non trovato con id: " + id);
+//    	}
+        
     }
 
     public ServizioDTO create(ServizioDTO dto) {
@@ -35,11 +44,21 @@ public class ServizioService {
     }
 
     public ServizioDTO update(Long id, ServizioDTO dto) {
+    	
         Servizio entity = repository.findById(id)
             .orElseThrow(() -> new RuntimeException("Servizio non trovato con id: " + id));
         
         entity.setTipoServizio(dto.getTipoServizio());
         return ServizioMapper.toDTO(repository.save(entity));
+        
+//      if (repository.findById(id).isPresent()) {
+//    		Servizio entity = repository.findById(id).get();
+//        	entity.setTipoServizio(dto.getTipoServizio());
+//    		return ServizioMapper.toDTO(repository.save(entity));
+//    	} else {
+//    		throw new RuntimeException("Servizio non trovato con id: " + id);
+//    	}
+        
     }
 
     public void delete(Long id) {

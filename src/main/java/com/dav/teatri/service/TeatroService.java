@@ -24,9 +24,18 @@ public class TeatroService {
     }
 
     public TeatroDTO findById(Long id) {
+    	
         Teatro entity = repository.findById(id)
             .orElseThrow(() -> new RuntimeException("Teatro non trovato con id: " + id));
         return TeatroMapper.toDTO(entity);
+        
+//      if (repository.findById(id).isPresent()) {
+//    		Teatro entity = repository.findById(id).get();
+//    		return TeatroMapper.toDTO(entity);
+//    	} else {
+//    		throw new RuntimeException("Teatro non trovato con id: " + id);
+//    	}
+        
     }
 
     public TeatroDTO create(TeatroDTO dto) {
@@ -35,6 +44,7 @@ public class TeatroService {
     }
 
     public TeatroDTO update(Long id, TeatroDTO dto) {
+    	
         Teatro entity = repository.findById(id)
             .orElseThrow(() -> new RuntimeException("Teatro non trovato con id: " + id));
         
@@ -44,6 +54,18 @@ public class TeatroService {
         entity.setOrarioChiusura(dto.getOrarioChiusura());
 
         return TeatroMapper.toDTO(repository.save(entity));
+        
+//      if (repository.findById(id).isPresent()) {
+//    		Teatro entity = repository.findById(id).get();
+//      	entity.setNome(dto.getNome());
+//      	entity.setTipo(dto.getTipo());
+//      	entity.setOrarioApertura(dto.getOrarioApertura());
+//      	entity.setOrarioChiusura(dto.getOrarioChiusura());
+//    		return TeatroMapper.toDTO(repository.save(entity));
+//    	} else {
+//    		throw new RuntimeException("Teatro non trovato con id: " + id);
+//    	}
+        
     }
 
     public void delete(Long id) {

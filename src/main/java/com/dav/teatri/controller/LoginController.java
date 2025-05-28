@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dav.teatri.dto.PrenotazioneDTO;
 import com.dav.teatri.model.CompagniaAttoriale;
 import com.dav.teatri.model.Prenotazione;
-import com.dav.teatri.repository.CompagniaAttorialeRepository;
+import com.dav.teatri.service.CompagniaAttorialeService;
 import com.dav.teatri.service.TeatroServizioService;
 
 @Controller
 public class LoginController {
 
     @Autowired
-    private CompagniaAttorialeRepository compagniaRepo;
+    private CompagniaAttorialeService compagniaService;
     
     @Autowired
     private TeatroServizioService teatroServizioService;
@@ -33,7 +33,7 @@ public class LoginController {
         @RequestParam String codiceIscrizione,
         Model model
     ) {
-        Optional<CompagniaAttoriale> compagniaOpt = compagniaRepo.findByNomeAndCodiceIscrizione(nome, codiceIscrizione);
+        Optional<CompagniaAttoriale> compagniaOpt = compagniaService.findByNomeAndCodiceIscrizione(nome, codiceIscrizione);
         
         if (compagniaOpt.isPresent()) {
             Long compagniaId = compagniaOpt.get().getId();
@@ -58,7 +58,7 @@ public class LoginController {
     public String mostraFormPrenotazione(@RequestParam Long compagniaId, Model model) {
         PrenotazioneDTO prenotazione = new PrenotazioneDTO();
 
-        Optional<CompagniaAttoriale> compagnia = compagniaRepo.findById(compagniaId);
+        Optional<CompagniaAttoriale> compagnia = compagniaService.findByIdOpt(compagniaId);
         if (compagnia.isEmpty()) {
             model.addAttribute("errore", "Compagnia non trovata");
             return "login";
@@ -73,7 +73,7 @@ public class LoginController {
     
     @PostMapping("/prenotazioneSave")
     public String salvaPrenotazione(@ModelAttribute Prenotazione prenotazione, @RequestParam Long compagniaId) {
-        Optional<CompagniaAttoriale> compagnia = compagniaRepo.findById(compagniaId);
+        Optional<CompagniaAttoriale> compagnia = compagniaService.findByIdOpt(compagniaId);
         compagnia.ifPresent(prenotazione::setCompagnia);
 
         

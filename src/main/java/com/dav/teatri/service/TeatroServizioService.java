@@ -50,10 +50,18 @@ public class TeatroServizioService {
 
         for (TeatroServizioDTO teatroServizioDTO : teatroServizi) {
             Long idt = teatroServizioDTO.getTeatroId();
+            
             teatroRepository.findById(idt).ifPresent(teatro -> {
                 TeatroDTO tdto = TeatroMapper.toDTO(teatro);
                 teatri.add(tdto);
             });
+            
+//          if (teatroRepository.findById(idt).isPresent()) {
+//        		Teatro teatro = teatroRepository.findById(idt).get();
+//        	    TeatroDTO tdto = TeatroMapper.toDTO(teatro);
+//        	    teatri.add(tdto);
+//        	}
+            
         }
 
         return teatri;
@@ -63,11 +71,19 @@ public class TeatroServizioService {
         List<ServizioDTO> servizi = new ArrayList<>();
 
         for (TeatroServizioDTO teatroServizioDTO : teatroServizi) {
-            Long id = teatroServizioDTO.getTipoServizioId();
-            servizioRepository.findById(id).ifPresent(servizio -> {
+            Long ids = teatroServizioDTO.getTipoServizioId();
+            
+            servizioRepository.findById(ids).ifPresent(servizio -> {
                 ServizioDTO sdto = ServizioMapper.toDTO(servizio);
                 servizi.add(sdto);
             });
+            
+//            if (servizioRepository.findById(ids).isPresent()) {
+//            	Servizio servizio = servizioRepository.findById(ids).get();
+//            	ServizioDTO sdto = ServizioMapper.toDTO(servizio);
+//        	    servizi.add(sdto);
+//            }
+            
         }
 
         return servizi;
@@ -80,16 +96,32 @@ public class TeatroServizioService {
     		VistsDTO dto = new VistsDTO();
     		dto.setId(teatroServizioDTO.getId());
     		Long idt = teatroServizioDTO.getTeatroId();
+    		
             teatroRepository.findById(idt).ifPresent(teatro -> {
                 TeatroDTO tdto = TeatroMapper.toDTO(teatro);
 
                 dto.setNomeTeatro(tdto.getNome());
             });
+            
+//          if (teatroRepository.findById(idt).isPresent()) {
+//        		Teatro teatro = teatroRepository.findById(idt).get();
+//        	    TeatroDTO tdto = TeatroMapper.toDTO(teatro);
+//        	    dto.setNomeTeatro(tdto.getNome());
+//        	}
+            
             Long ids = teatroServizioDTO.getTipoServizioId();
+            
             servizioRepository.findById(ids).ifPresent(servizio -> {
                 ServizioDTO sdto = ServizioMapper.toDTO(servizio);
                 dto.setTipoServizio(sdto.getTipoServizio());
             });
+            
+//          if (servizioRepository.findById(ids).isPresent()) {
+//        	Servizio servizio = servizioRepository.findById(ids).get();
+//        	ServizioDTO sdto = ServizioMapper.toDTO(servizio);
+//        	dto.setTipoServizio(sdto.getTipoServizio());
+//          }
+            
             dto.setRichiedeOrarioArrivo(teatroServizioDTO.getRichiedeOrarioArrivo());
             dto.setNumAddetti(teatroServizioDTO.getNumAddetti());
             listForVis.add(dto);
@@ -99,29 +131,82 @@ public class TeatroServizioService {
 
 
     public TeatroServizioDTO findById(Long id) {
+    	
         TeatroServizio entity = repository.findById(id)
             .orElseThrow(() -> new RuntimeException("TeatroServizio non trovato con id: " + id));
         return TeatroServizioMapper.toDTO(entity);
+        
+//      if (repository.findById(id).isPresent()) {
+//    		TeatroServizio entity = repository.findById(id).get();
+//    		return TeatroServizioMapper.toDTO(entity);
+//    	} else {
+//    		throw new RuntimeException("TeatroServizio non trovato con id: " + id);
+//    	}
+        
     }
 
     public TeatroServizioDTO create(TeatroServizioDTO dto) {
+    	
         Teatro teatro = teatroRepository.findById(dto.getTeatroId())
             .orElseThrow(() -> new RuntimeException("Teatro non trovato con id: " + dto.getTeatroId()));
+
+//      Teatro teatro = null;  
+//      if (teatroRepository.findById(dto.getTeatroId()).isPresent()) {
+//    		teatro = teatroRepository.findById(dto.getTeatroId()).get();
+//    		TeatroMapper.toDTO(teatro);
+//    	} else {
+//    		throw new RuntimeException("Teatro non trovato con id: " + dto.getTeatroId());
+//    	}
+        
         Servizio servizio = servizioRepository.findById(dto.getTipoServizioId())
             .orElseThrow(() -> new RuntimeException("Servizio non trovato con id: " + dto.getTipoServizioId()));
+      
+//      Servizio servizio = null;  
+//      if (servizioRepository.findById(dto.getTipoServizioId()).isPresent()) {
+//    		servizio = servizioRepository.findById(dto.getTipoServizioId()).get();
+//    		ServizioMapper.toDTO(servizio);
+//    	} else {
+//    		throw new RuntimeException("Servizio non trovato con id: " + dto.getTipoServizioId());
+//    	}
 
         TeatroServizio entity = TeatroServizioMapper.toEntity(dto, teatro, servizio);
         return TeatroServizioMapper.toDTO(repository.save(entity));
     }
 
     public TeatroServizioDTO update(Long id, TeatroServizioDTO dto) {
+    	
         TeatroServizio entity = repository.findById(id)
             .orElseThrow(() -> new RuntimeException("TeatroServizio non trovato con id: " + id));
+      
+//      TeatroServizio entity = null;
+//      if (repository.findById(id).isPresent()) {
+//    		entity = repository.findById(id).get();
+//    		TeatroServizioMapper.toDTO(entity);
+//    	} else {
+//    		throw new RuntimeException("TeatroServizio non trovato con id: " + id);
+//    	}
 
         Teatro teatro = teatroRepository.findById(dto.getTeatroId())
             .orElseThrow(() -> new RuntimeException("Teatro non trovato con id: " + dto.getTeatroId()));
+        
+//      Teatro teatro = null;  
+//      if (teatroRepository.findById(dto.getTeatroId()).isPresent()) {
+//    		teatro = teatroRepository.findById(dto.getTeatroId()).get();
+//    		TeatroMapper.toDTO(teatro);
+//    	} else {
+//    		throw new RuntimeException("Teatro non trovato con id: " + dto.getTeatroId());
+//    	}
+        
         Servizio servizio = servizioRepository.findById(dto.getTipoServizioId())
             .orElseThrow(() -> new RuntimeException("Servizio non trovato con id: " + dto.getTipoServizioId()));
+        
+//      Servizio servizio = null;  
+//      if (servizioRepository.findById(dto.getTipoServizioId()).isPresent()) {
+//    		servizio = servizioRepository.findById(dto.getTipoServizioId()).get();
+//    		ServizioMapper.toDTO(servizio);
+//    	} else {
+//    		throw new RuntimeException("Servizio non trovato con id: " + dto.getTipoServizioId());
+//    	}
 
         entity.setTeatro(teatro);
         entity.setTipoServizio(servizio);
