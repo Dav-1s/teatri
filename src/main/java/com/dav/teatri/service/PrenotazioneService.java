@@ -13,6 +13,7 @@ import com.dav.teatri.mapper.ServizioMapper;
 import com.dav.teatri.mapper.TeatroMapper;
 import com.dav.teatri.model.CompagniaAttoriale;
 import com.dav.teatri.model.Prenotazione;
+import com.dav.teatri.model.Teatro;
 import com.dav.teatri.model.TeatroServizio;
 import com.dav.teatri.repository.CompagniaAttorialeRepository;
 import com.dav.teatri.repository.PrenotazioneRepository;
@@ -23,6 +24,7 @@ import com.dav.teatri.repository.TeatroServizioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -164,12 +166,18 @@ public class PrenotazioneService {
     	Prenotazione entity = PrenotazioneMapper.toEntity(dto, compagnia, teatroServizio);
         Long teatroId = entity.getTeatroServizio().getTeatro().getId();
         LocalDate data = entity.getData();
+        LocalTime oraArrivo = entity.getOrarioArrivo();
+        
+        LocalTime oraApertura = entity.getTeatroServizio().getTeatro().getOrarioApertura();
+        LocalTime oraChiusura = entity.getTeatroServizio().getTeatro().getOrarioChiusura();
     	
     	if (repository.existsByTeatroServizio_Teatro_IdAndData(teatroId, data)) {
             return "Il teatro è già prenotato per questa data.";
+        } else if (oraArrivo.isBefore(oraApertura) || oraArrivo.isAfter(oraChiusura)) {
+        	return "Il teatro alle ore: " + oraArrivo + " sarà chiuso";
         } else {
         	return null;
-        }
+        } 
     	
     }
 
