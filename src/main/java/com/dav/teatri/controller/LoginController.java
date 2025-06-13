@@ -31,6 +31,31 @@ public class LoginController {
     @Autowired
     private PrenotazioneService prenotazioneService;
 
+//    @GetMapping("/login")
+//    public String login(
+//        @RequestParam String nome,
+//        @RequestParam String codiceIscrizione,
+//        Model model
+//    ) {
+//        Optional<CompagniaAttoriale> compagniaOpt = compagniaService.findByNomeAndCodiceIscrizione(nome, codiceIscrizione);
+//        
+//        if (compagniaOpt.get().getId() == 0) {
+//        	return "redirect:/index";
+//        }
+//        else if (compagniaOpt.isPresent()) {
+//            Long compagniaId = compagniaOpt.get().getId();
+//            model.addAttribute("compagniaId", compagniaId);
+//            model.addAttribute("nomeCompagnia", compagniaService.findById(compagniaId).getNome());
+//            return "redirect:/prenotazioneUtente?compagniaId=" + compagniaId;
+//        }
+//        else {
+//            model.addAttribute("errore", "Credenziali non valide");
+//            return "login";
+//        }
+//
+//
+//    }
+    
     @GetMapping("/login")
     public String login(
         @RequestParam String nome,
@@ -38,22 +63,24 @@ public class LoginController {
         Model model
     ) {
         Optional<CompagniaAttoriale> compagniaOpt = compagniaService.findByNomeAndCodiceIscrizione(nome, codiceIscrizione);
-        
-        if (compagniaOpt.get().getNome().equals("ADMIN")) {
-        	return "redirect:/index";
-        }
-        else if (compagniaOpt.isPresent()) {
-            Long compagniaId = compagniaOpt.get().getId();
-            model.addAttribute("compagniaId", compagniaId);
-            model.addAttribute("nomeCompagnia", compagniaService.findById(compagniaId).getNome());
-            return "redirect:/prenotazioneUtente?compagniaId=" + compagniaId;
-        }
-        else {
+
+        if (compagniaOpt.isEmpty()) {
             model.addAttribute("errore", "Credenziali non valide");
             return "login";
         }
 
+        CompagniaAttoriale compagnia = compagniaOpt.get();
+        
+        // Se vuoi ancora controllare se id == 0 (anche se strano per un DB), fallo qui
+        if (compagnia.getId() == 0) {
+            return "redirect:/index";
+        }
 
+        Long compagniaId = compagnia.getId();
+        model.addAttribute("compagniaId", compagniaId);
+        model.addAttribute("nomeCompagnia", compagnia.getNome());
+
+        return "redirect:/prenotazioneUtente?compagniaId=" + compagniaId;
     }
 
     @GetMapping("/")
