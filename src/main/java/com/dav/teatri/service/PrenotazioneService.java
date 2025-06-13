@@ -11,11 +11,8 @@ import com.dav.teatri.mapper.CompagniaAttorialeMapper;
 import com.dav.teatri.mapper.PrenotazioneMapper;
 import com.dav.teatri.mapper.ServizioMapper;
 import com.dav.teatri.mapper.TeatroMapper;
-import com.dav.teatri.mapper.TeatroServizioMapper;
 import com.dav.teatri.model.CompagniaAttoriale;
 import com.dav.teatri.model.Prenotazione;
-import com.dav.teatri.model.Servizio;
-import com.dav.teatri.model.Teatro;
 import com.dav.teatri.model.TeatroServizio;
 import com.dav.teatri.repository.CompagniaAttorialeRepository;
 import com.dav.teatri.repository.PrenotazioneRepository;
@@ -25,6 +22,7 @@ import com.dav.teatri.repository.TeatroServizioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -131,6 +129,7 @@ public class PrenotazioneService {
         TeatroServizio teatroServizio = teatroServizioRepository.findById(dto.getTeatroServizioId())
             .orElseThrow(() -> new RuntimeException("TeatroServizio non trovato con id: " + dto.getTeatroServizioId()));
         
+        
 //      CompagniaAttoriale compagnia = null; 
 //      if (compagniaRepository.findById(dto.getCompagniaId()).isPresent()) {
 //    		compagnia = compagniaRepository.findById(dto.getCompagniaId()).get();
@@ -147,10 +146,31 @@ public class PrenotazioneService {
 //    	}
 
         Prenotazione entity = PrenotazioneMapper.toEntity(dto, compagnia, teatroServizio);
+        Long teatroId = entity.getTeatroServizio().getTeatro().getId();
+        LocalDate data = entity.getData();
+    	
+    	if (repository.existsByTeatroServizio_Teatro_IdAndData(teatroId, data)) {
+            throw new IllegalArgumentException("Il teatro è già prenotato per questa data.");
+        }
         return PrenotazioneMapper.toDTO(repository.save(entity));
-        
-
-        
+ 
+    }
+    
+    public String teatroOccupato(PrenotazioneDTO dto) {
+    	
+    	CompagniaAttoriale compagnia = compagniaRepository.findById(dto.getCompagniaId()).get();
+    	TeatroServizio teatroServizio = teatroServizioRepository.findById(dto.getTeatroServizioId()).get();
+    	
+    	Prenotazione entity = PrenotazioneMapper.toEntity(dto, compagnia, teatroServizio);
+        Long teatroId = entity.getTeatroServizio().getTeatro().getId();
+        LocalDate data = entity.getData();
+    	
+    	if (repository.existsByTeatroServizio_Teatro_IdAndData(teatroId, data)) {
+            return "Il teatro è già prenotato per questa data.";
+        } else {
+        	return null;
+        }
+    	
     }
 
     public PrenotazioneDTO update(Long id, PrenotazioneDTO dto) {
@@ -199,4 +219,22 @@ public class PrenotazioneService {
         }
         repository.deleteById(id);
     }
+
+//	public List<PrenotazioneDTO> findByCompagniaId(Long compagniaId) {
+//		
+//		return repository.findByCompagniaId(compagniaId).stream() //".stream()" = Converte la lista in uno Stream, ovvero una sequenza di dati su cui puoi eseguire operazioni funzionali.
+//	            .map(PrenotazioneMapper::toDTO) // "::" = per ogni pr(oggetto) in prdto usa il metodo toDTO()
+//	            .collect(Collectors.toList());
+//		
+//	}
+	
+	public List<Prenotazione> findByCompagniaId(Long compagniaId) {
+		
+		return repository.findByCompagniaId(compagniaId).stream() //".stream()" = Converte la lista in uno Stream, ovvero una sequenza di dati su cui puoi eseguire operazioni funzionali.
+	            .collect(Collectors.toList());
+		
+	}
+	
+	
+	
 }

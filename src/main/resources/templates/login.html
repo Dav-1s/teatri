@@ -5,15 +5,63 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-    <h1>Login Compagnia Attoriale</h1>
-    <form th:action="@{/login}" method="get">
-        <label for="nome">Nome Compagnia:</label>
-        <input type="text" id="nome" name="nome" required />
+    <h1>Login</h1>
 
-        <label for="codiceIscrizione">Codice Iscrizione:</label>
-        <input type="text" id="codiceIscrizione" name="codiceIscrizione" required />
+    <!-- Mostra l'errore se presente -->
+    <div th:if="${errore}" style="color: red; margin-bottom: 10px;">
+        <p th:text="${errore}"></p>
+    </div>
+
+    <form th:action="@{/login}" method="get">
+        <div>
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required />
+        </div>
+
+        <div>
+            <label for="codiceIscrizione">Codice:</label>
+            <input type="text" id="codiceIscrizione" name="codiceIscrizione"
+                   pattern="[0-9]{4,}" title="Almeno 4 cifre numeriche" required />
+        </div>
 
         <button type="submit">Accedi</button>
     </form>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const nomeInput = document.getElementById('nome');
+        const codiceInput = document.getElementById('codiceIscrizione');
+        const nomeError = document.getElementById('nomeError');
+        const codiceError = document.getElementById('codiceError');
+
+        form.addEventListener('submit', function (event) {
+            let valid = true;
+
+            // Nome: obbligatorio
+            if (nomeInput.value.trim() === "") {
+                nomeError.style.display = "block";
+                nomeInput.classList.add("invalid");
+                valid = false;
+            } else {
+                nomeError.style.display = "none";
+                nomeInput.classList.remove("invalid");
+            }
+
+            // Codice: almeno 4 caratteri, solo 0-9
+            const codiceRegex = /^[0-9]{4,}$/;
+            if (!codiceRegex.test(codiceInput.value)) {
+                codiceError.style.display = "block";
+                codiceInput.classList.add("invalid");
+                valid = false;
+            } else {
+                codiceError.style.display = "none";
+                codiceInput.classList.remove("invalid");
+            }
+
+            if (!valid) {
+                event.preventDefault(); // blocca l'invio
+            }
+        });
+    </script>
 </body>
 </html>

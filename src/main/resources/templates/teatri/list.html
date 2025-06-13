@@ -34,7 +34,7 @@
                         <a th:href="@{/teatri/delete/{id}(id=${teatro.id})}"
                            class="button-icon"
                            title="Elimina"
-                           onclick="return confirm('Sei sicuro di voler eliminare questo teatro?')">
+                           onclick="return confirm('Sei sicuro di voler eliminare questo teatro? Verranno eliminati anche i srvizi e le prenotazioni associate')">
                             🗑️
                         </a>
                     </td>
@@ -50,7 +50,7 @@
         </button>
     </div>
 
-    <a th:href="@{/}" class="button">↩️ Torna alla home</a>
+    <a th:href="@{/index}" class="button">↩️ Torna alla home</a>
 </div>
 </body>
 </html>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dav.teatri.dto.PrenotazioneDTO;
 import com.dav.teatri.dto.TeatroDTO;
@@ -75,7 +76,7 @@ public class PrenotazioneController {
     @PostMapping("/salva")
     public String salvaPrenotazione(@ModelAttribute PrenotazioneDTO prenotazioneDTO) {
         prenotazioneService.create(prenotazioneDTO);
-        return "redirect:/prenotazioni/teatri";
+        return "redirect:/";
     }
 
 
@@ -99,9 +100,17 @@ public class PrenotazioneController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute PrenotazioneDTO dto) {
-        service.create(dto);
-        return "redirect:/prenotazioni";
+    public String create(@ModelAttribute PrenotazioneDTO dto, RedirectAttributes redirectAttributes) {
+    	// TODO aggiungere messaggio di errore per data duplicata
+    	Long compagniaId = dto.getCompagniaId();
+    	String teatroOccupato = service.teatroOccupato(dto);
+    	if (teatroOccupato == null) {
+    		service.create(dto);
+    	} else {
+    		redirectAttributes.addFlashAttribute("errore", teatroOccupato);
+    	}
+    	return "redirect:/prenotazioneUtente?compagniaId=" + compagniaId;
+        
     }
 
     @GetMapping("/edit/{id}")

@@ -1,5 +1,6 @@
 package com.dav.teatri.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.dav.teatri.dto.PrenotazioneDTO;
 import com.dav.teatri.model.CompagniaAttoriale;
 import com.dav.teatri.model.Prenotazione;
 import com.dav.teatri.service.CompagniaAttorialeService;
+import com.dav.teatri.service.PrenotazioneService;
 import com.dav.teatri.service.TeatroServizioService;
 
 @Controller
@@ -24,8 +26,10 @@ public class LoginController {
     
     @Autowired
     private TeatroServizioService teatroServizioService;
+    
 
-
+    @Autowired
+    private PrenotazioneService prenotazioneService;
 
     @GetMapping("/login")
     public String login(
@@ -35,14 +39,21 @@ public class LoginController {
     ) {
         Optional<CompagniaAttoriale> compagniaOpt = compagniaService.findByNomeAndCodiceIscrizione(nome, codiceIscrizione);
         
-        if (compagniaOpt.isPresent()) {
+        if (compagniaOpt.get().getNome().equals("ADMIN")) {
+        	return "redirect:/index";
+        }
+        else if (compagniaOpt.isPresent()) {
             Long compagniaId = compagniaOpt.get().getId();
             model.addAttribute("compagniaId", compagniaId);
+            model.addAttribute("nomeCompagnia", compagniaService.findById(compagniaId).getNome());
             return "redirect:/prenotazioneUtente?compagniaId=" + compagniaId;
         }
+        else {
+            model.addAttribute("errore", "Credenziali non valide");
+            return "login";
+        }
 
-        model.addAttribute("errore", "Credenziali non valide");
-        return "login";
+
     }
 
     @GetMapping("/")
@@ -55,8 +66,10 @@ public class LoginController {
         return "index";
     }
     @GetMapping("/prenotazioneUtente")
-    public String mostraFormPrenotazione(@RequestParam Long compagniaId, Model model) {
+    public String mostraFormPrenotazione(@RequestParam Long compagniaId, Model model, @ModelAttribute("errore") String errore) {
         PrenotazioneDTO prenotazione = new PrenotazioneDTO();
+        
+        List<Prenotazione> prenotazioniCompagnia = prenotazioneService.findByCompagniaId(compagniaId);
 
         Optional<CompagniaAttoriale> compagnia = compagniaService.findByIdOpt(compagniaId);
         if (compagnia.isEmpty()) {
@@ -68,6 +81,12 @@ public class LoginController {
 
         model.addAttribute("prenotazione", prenotazione);
         model.addAttribute("teatriServizi", teatroServizioService.findAllm());
+        model.addAttribute("prenotazioniCompagnia", prenotazioniCompagnia);
+        
+        if (errore != null && !errore.isEmpty()) {
+            model.addAttribute("errore", errore);
+        }
+        
         return "utentePrenota";
     }
     
