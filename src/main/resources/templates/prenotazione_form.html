@@ -5,6 +5,9 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+<a th:href="@{/}" class="button-icon" style="position: absolute; top: 10px; right: 20px;">
+    LOGOUT
+</a>
     <h1>Completa Prenotazione</h1>
     <form th:action="@{/prenotazioni/crea}" method="post">
         <input type="hidden" name="teatroId" th:value="${teatro.id}" />
