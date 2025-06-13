@@ -10,13 +10,7 @@
 
     <form th:action="@{/prenotazioni}" method="post" th:object="${prenotazione}">
         <input type="hidden" th:field="*{id}" />
-        <select th:field="*{compagniaId}" required>
-    		<option value="1" disabled selected>Seleziona una compagnia</option>
-    		<option th:each="c : ${compagnie}"
-            		th:value="${c.id}"
-            		th:text="${c.nome}">
-    		</option>
-		</select>
+        <input type="hidden" th:field="*{compagniaId}" />
         <select th:field="*{teatroServizioId}" required>
     		<option value="1" disabled selected>-- Seleziona Teatro-Servizio --</option>
     		<option th:each="ts : ${teatroServizi}"
@@ -30,7 +24,7 @@
         <button type="submit">Salva</button>
     </form>
 
-    <a th:href="@{/prenotazioni}" class="button">↩️ Torna alla lista</a>
+    <a th:href="@{/prenotazioneUtente(compagniaId=*{compagniaId})}" class="button">↩️ indietro</a>
 </div>
 </body>
 </html>

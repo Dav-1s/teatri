@@ -20,6 +20,7 @@
                 <th>Orario</th>
                 <th>Teatro</th>
                 <th>Servizio</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -28,9 +29,22 @@
                 <td th:text="${p.orarioArrivo}"></td>
                 <td th:text="${p.teatroServizio.teatro.nome}"></td>
                 <td th:text="${p.teatroServizio.tipoServizio.tipoServizio}"></td>
+                <td class="actions">
+            	<a th:href="@{/prenotazioni/editu/{id}(id=${p.id})}" class="button-icon" title="Modifica">
+            	✏️
+        		</a>
+        		<a th:href="@{/prenotazioni/deleteu/{id}(id=${p.id})}" 
+           			class="button-icon" 
+           			title="Elimina" 
+           			onclick="return confirm('Sei sicuro di voler eliminare questa prenotazione?')">
+            		🗑️
+        		</a>
+        		</td>   
             </tr>
         </tbody>
     </table>
+    
+
     
 	<h2>Nuova prenotazione</h2>
     <form th:action="@{/prenotazioni}" method="post" th:object="${prenotazione}">

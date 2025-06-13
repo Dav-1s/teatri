@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dav.teatri.dto.PrenotazioneDTO;
 import com.dav.teatri.dto.TeatroDTO;
 import com.dav.teatri.dto.TeatroServizioDTO;
+import com.dav.teatri.mapper.CompagniaAttorialeMapper;
+import com.dav.teatri.model.CompagniaAttoriale;
 import com.dav.teatri.service.CompagniaAttorialeService;
 import com.dav.teatri.service.PrenotazioneService;
 import com.dav.teatri.service.ServizioService;
@@ -118,7 +120,7 @@ public class PrenotazioneController {
     	List<PrenotazioneDTO> prenotazioni = service.findAll();
         model.addAttribute("prenotazione", service.findById(id));
         model.addAttribute("compagnie", compagniaService.findAll());
-        model.addAttribute("teatroServizi", teatroServizioService.findAll());
+        model.addAttribute("teatroServizi", teatroServizioService.findAllm());
         model.addAttribute("listForVispr", service.listForVis(prenotazioni));
         return "prenotazioni/form";
     }
@@ -128,11 +130,41 @@ public class PrenotazioneController {
         service.update(id, dto);
         return "redirect:/prenotazioni";
     }
+    
+    
+    
+    @GetMapping("/editu/{id}")
+    public String showEditFormu(@PathVariable Long id, Model model) {
+
+    	Long compagniaId = service.findById(id).getCompagniaId();
+    	
+    	List<PrenotazioneDTO> prenotazioni = service.findAll();
+        model.addAttribute("prenotazione", service.findById(id));
+        model.addAttribute("compagniaId", compagniaId);
+        model.addAttribute("teatroServizi", teatroServizioService.findAllm());
+        model.addAttribute("listForVispr", service.listForVis(prenotazioni));
+        
+        return "prenotazioni/formu";
+    }
+
+    @PostMapping("u/{id}")
+    public String updateu(@PathVariable Long id, @ModelAttribute PrenotazioneDTO dto) {
+    	Long compagniaId = service.findById(id).getCompagniaId();
+        service.update(id, dto);
+        return "redirect:/prenotazioneUtente?compagniaId=" + compagniaId;
+    }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         service.delete(id);
         return "redirect:/prenotazioni";
+    }
+    
+    @GetMapping("/deleteu/{id}")
+    public String deleteu(@PathVariable Long id) {
+    	Long compagniaId = service.findById(id).getCompagniaId();
+        service.delete(id);
+        return "redirect:/prenotazioneUtente?compagniaId=" + compagniaId;
     }
 }
 
