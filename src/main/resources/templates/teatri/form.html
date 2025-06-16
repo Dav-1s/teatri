@@ -19,7 +19,9 @@
     		<option value="classico">Classico</option>
     		<option value="moderno">Moderno</option>
 		</select>
+		<label>ora apertura</label>
         <input type="time" th:field="*{orarioApertura}" required />
+		<label>ora chiusura</label>
         <input type="time" th:field="*{orarioChiusura}" required />
         <button type="submit">Salva</button>
     </form>

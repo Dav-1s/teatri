@@ -16,8 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dav.teatri.dto.PrenotazioneDTO;
 import com.dav.teatri.dto.TeatroDTO;
 import com.dav.teatri.dto.TeatroServizioDTO;
-import com.dav.teatri.mapper.CompagniaAttorialeMapper;
-import com.dav.teatri.model.CompagniaAttoriale;
 import com.dav.teatri.service.CompagniaAttorialeService;
 import com.dav.teatri.service.PrenotazioneService;
 import com.dav.teatri.service.ServizioService;
